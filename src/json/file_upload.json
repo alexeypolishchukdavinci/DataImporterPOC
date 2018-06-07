@@ -1,0 +1,24 @@
+{
+    "header": true,
+    "headerRows": 1,
+    "headerOption": {
+        "option": "auto / all / concat / specific",
+        "concat": "[CONCATENATION CHARACTER]",
+        "rowNum": 1
+    },
+    "sheets": [
+        {
+            "index": 0,
+            "goal": "[goal id]"
+        },
+        {
+            "index": 1,
+            "goal": "[goal id]"
+        },
+        {
+            "index": 2,
+            "goal": "[goal id]"
+        }
+    ],
+    "delimiter": "[DELIMITER CHARACTER]"
+}

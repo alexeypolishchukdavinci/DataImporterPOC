@@ -1,0 +1,10 @@
+{
+    "image/gif": "Graphics Interchange Format (GIF)",
+    "image/png": "Portable Network Graphics (PNG)",
+    "image/jpeg": "JPEG images",
+    "text/csv": "Comma-separated values (CSV)",
+    "application/vnd.ms-excel": "Microsoft Excel",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "Microsoft Excel Worksheet",
+    "application/vnd.ms-excel.sheet.macroEnabled.12": "Microsoft Excel Macro-Enabled Worksheet",
+    "application/xml": "XML"
+}

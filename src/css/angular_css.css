@@ -1,0 +1,26 @@
+.ht_master tr:nth-of-type(even) > td {
+    background-color: #EEEEEE;
+}
+
+.ht_clone_top th {
+    background-color: darkgrey;
+    color: black;
+    font-weight: bold;
+}
+
+.italic_click {
+    cursor: pointer;
+}
+
+#parseTable {
+    border: 1px solid black;
+    cursor: pointer;
+    width: 25%;
+    height: 25px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

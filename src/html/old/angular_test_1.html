@@ -1,0 +1,33 @@
+<!doctype html>
+<html ng-app="testApp">
+
+<head>
+    <meta charset="utf-8">
+    <title>Angular Test 1</title>
+    <link rel="stylesheet" href="../../css/angular_css.css" />
+    <script src="../../js/lib/angular.min.js"></script>
+    <script src="../../js/old/angular_test_1.js"></script>
+</head>
+
+<body ng-controller="TestController">
+    <textarea rows="1" cols="50" ng-model="newItemName" placeholder="Item name..."></textarea><br>
+    <textarea rows="1" cols="50" ng-model="newItemImg" placeholder="Image url..."></textarea><br>
+    <button type="button" ng-click="add()">Add!</button>
+    <button type="button" ng-click="pop()">Pop!</button>
+    <p style="color: red; font-style: italic" ng-show="showError">
+        Error: {{currentError}}
+    </p>
+    
+
+    <br>
+    <ul>
+        <li ng-repeat="item in listOfItems">
+            <span style="font-weight: bold;">{{item.name}}</span>
+            <br>
+            <img ng-src="{{item.image}}" style="width: 100px; height: 100px">
+        </li>
+    </ul>
+
+</body>
+
+</html>

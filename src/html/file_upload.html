@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="testApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo: Row Selection String</title>
+    <script src="../js/lib/angular.min.js"></script>
+    <script src="../js/lib/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="../js/file_upload.controller.js"></script>
+    <link rel="stylesheet" href="../css/angular_css.css">
+</head>
+<body>
+<div ng-controller="FileUploadController">
+    <div>
+        <p style="display: inline-block;">Use a profile?</p>
+        <select style="display: inline-block;" ng-model="selectedProfileText" ng-change="setSelectedProfile()">
+            <option value="___none___">None</option>
+            <option value="___new___">New</option>
+            <option ng-repeat="prof in listOfProfiles" ng-value="prof.import_type">
+                '{{prof.name}}'
+            </option>
+        </select>
+        <div ng-show="newProfile">
+            <p style="display: inline-block;">New profile name: </p>
+            <input type="text" ng-model="newProfileNameText" maxlength="100" placeholder="Enter profile name...">
+        </div>
+    </div>
+    <br>
+    <div>
+        <p style="display: inline-block;">What are you importing?</p>
+        <select ng-model="selectedImportGoalText" ng-change="setSelectedImportGoal()">
+            <option value="___none___">Select a goal...</option>
+            <option value="___multiple___">Multiple sheets with distinct goals.</option>
+            <option ng-repeat="goal in listOfImportGoals" ng-value="goal.import_type">
+                '{{goal.name}}'
+            </option>
+        </select>
+    </div>
+    <br>
+    <div>
+        <p>Select your file:</p>
+        <input
+                ng-disabled="selectedImportGoalText==='___none___'"
+                type="file"
+                ng-accept="{{getAcceptedFileTypes()}}"
+                onchange="angular.element(this).scope().selectFile(this)"
+                ng-model="file"
+        >
+    </div>
+    <br>
+    <div ng-show="getValidFileSettings()!==null">
+        <h3 style="horiz-align: center">File Settings</h3>
+        <div style="background-color: #EEEEEE; border-top: 1px solid black; width: 100%;">
+            <div ng-show="multiSheet && getValidFileSettings().sheets">
+                <p>Select sheets:</p>
+                <ul>
+                    <li ng-repeat="sheet in sheets">
+                        <input type="checkbox" ng-model="getSheetModel($index).select"> {{sheet.name}}
+                        <select style="display: inline-block;" ng-disabled="!getSheetModel($index).select" ng-model="getSheetModel($index).import_type" ng-change="setSelectedImportGoal($index)">
+                            <option value="___none___">Select a goal...</option>
+                            <option ng-repeat="goal in listOfImportGoals" ng-value="goal.import_type">
+                                '{{goal.name}}'
+                            </option>
+                        </select>
+                        <p style="color: red;" ng-show="getSheetModel($index).import_type==='___none___'&&getSheetModel($index).select">Please select a goal!</p>
+                    </li>
+                </ul>
+            </div>
+            <div ng-show="getValidFileSettings().delimiter">
+                <p>CSV delimiter:</p>
+                <label ng-repeat="del in csvDelimiters">
+                    <input type="radio" name="delimiterRadio" ng-value="del.value" ng-model="$parent.selectedDelimiter">{{del.display}}
+                </label>
+                <input type="radio" name="delimiterRadio" value="OTHER" ng-model="selectedDelimiter"> Other (please specify)
+                <input ng-disabled="selectedDelimiter!=='OTHER'" type="text" placeholder="," ng-model="enteredDelimiter" maxlength="1" minlength="1">
+                <br>
+            </div>
+            <br>
+            <div>
+                <p style="display: inline-block;">File has header?</p>
+                <input type="checkbox" style="display: inline-block;" ng-model="hasHeader">
+                <p style="display: inline-block;">No. of header rows:</p>
+                <input style="display: inline-block;" type="number" min="1" max="999" ng-model="numHeaderRows" ng-disabled="!hasHeader">
+                <div ng-show="numHeaderRows>1">
+                    <p style="display: inline-block;">How to handle headers?</p>
+                    <select style="display: inline-block;" ng-disabled="!hasHeader" ng-model="headerOption">
+                        <option value="auto">
+                            Auto-Generate
+                        </option>
+                        <option value="all">
+                            Use All
+                        </option>
+                        <option value="concat">
+                            Concatenate All
+                        </option>
+                        <option value="spec">
+                            Use Specific Row
+                        </option>
+                    </select>
+                    <p style="display: inline-block;" ng-show="headerOption==='concat'">Concatenation character:</p>
+                    <input style="display: inline-block;" type="text" maxlength="1" ng-model="headerOptionConcat" ng-show="headerOption==='concat'">
+                    <p style="display: inline-block;" ng-show="headerOption==='spec'">Select row:</p>
+                    <input type="number" min="1" ng-model="headerOptionNumber" ng-show="headerOption==='spec'">
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+    <br>
+    <div ng-show="fileIsUploaded">
+        <button ng-click="doUpload()" ng-disabled="!allowUpload()">Upload File</button>
+    </div>
+    <div>
+        {{uploadedMetadata}}
+    </div>
+</div>
+<my-footer></my-footer>
+</body>
+</html>

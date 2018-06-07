@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo: Popups</title>
+    <script src="../js/lib/angular.min.js"></script>
+    <script src="../js/popups.controller.js"></script>
+    <link rel="stylesheet" href="../css/angular_css.css">
+</head>
+<body ng-app="testApp" >
+<div ng-controller="PopupController">
+    <button ng-click="createMessage()">
+        Create Message
+    </button>
+    <button ng-click="createSuccess()">
+        Create Success
+    </button>
+    <button ng-click="createWarning()">
+        Create Warning
+    </button>
+    <button ng-click="createError()">
+        Create Error
+    </button>
+    <br><br><br>
+    <div id="popupBox" style="border: 1px solid black; width: 50%; height: 300px; margin: auto;">
+        <div id="popupHeader" ng-style="popupStyle('head')" style="height: 20%; text-align: center; font-size: 24px">
+            {{popup.title}}
+        </div>
+        <div id="popupBody" ng-style="popupStyle('body')" style="height: 70%">
+            TEXT
+        </div>
+        <div id="popupFooter" style="height: 10%; text-align: center">
+            <span ng-show="true">
+                <button>
+                    Cancel
+                </button>
+            </span>
+            <span ng-show="true">
+                <button>
+                    Back
+                </button>
+            </span>
+            <span>
+                <button ng-show="popup.type==='warn'||popup.type==='error'">
+                    Try Again
+                </button>
+            </span>
+            <span ng-show="popup.type==='message'||popup.type==='success'||popup.type==='warn'">
+                <button ng-show="popup.type==='message'||popup.type==='success'">
+                    Next
+                </button>
+                <button ng-show="popup.type==='warn'">
+                    Continue Anyways
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+<my-footer></my-footer>
+</body>
+</html>

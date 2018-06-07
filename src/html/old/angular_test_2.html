@@ -1,0 +1,37 @@
+<!doctype html>
+<html ng-app="testApp">
+
+<head>
+    <meta charset="utf-8">
+    <title>Angular Test 2</title>
+    <link rel="stylesheet" href="../../css/angular_css.css" />
+    <script src="../../js/lib/angular.min.js"></script>
+    <script src="../../js/old/angular_test_2.js"></script>
+</head>
+
+<body ng-controller="HeapController">
+    <textarea rows="1" cols="50" ng-model="newItem" style="align-self: center">
+        
+    </textarea>
+    <br>
+    <button ng-click="pushItem()">
+        Push
+    </button>
+    <button ng-click="popItem()">
+        Pop
+    </button>
+    <button ng-click="printHeap()">
+        Print
+    </button>
+    <br>
+    <table>
+        <tr ng-repeat="r in heapObj.rows" style="border: 1px solid black">
+            {{r}}
+        </tr>
+    </table>
+    <p>
+        {{heapText}}
+    </p>
+</body>
+
+</html>

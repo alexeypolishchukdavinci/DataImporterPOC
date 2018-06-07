@@ -1,0 +1,121 @@
+<!doctype html>
+<html ng-app="testApp">
+
+<head>
+    <meta charset="utf-8">
+    <title>File Upload Test</title>
+    <link rel="stylesheet" href="../../css/angular_css.css" />
+    <script src="../../js/lib/angular.min.js"></script>
+    <script src="../../js/lib/angular-sanitize.min.js"></script>
+    <script src="../../js/lib/handsontable-pro/dist/handsontable.full.js"></script>
+    <script src="../../js/lib/xlsx/dist/xlsx.full.min.js"></script>
+
+    <link rel="stylesheet" media="screen" href="../../js/lib/handsontable-pro/dist/handsontable.full.css">
+    <link rel="stylesheet" href="../../css/angular_css.css">
+
+    <style>
+        td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body ng-controller="UploadController">
+<div>
+    <input
+            type="file"
+            onchange="angular.element(this).scope().file_changed(this)"
+            ng-model="file"
+            multiple
+            accept=".xls, .xlsx, .xlt, .xlsm, .csv"
+    >
+    </input>
+
+    <label for="check" style="word-wrap:break-word">
+        <input id="check" type="checkbox" ng-model="hasHeader" ng-click="headerCheck()"/> Header?
+    </label>
+    <label for="readOnly" style="word-wrap:break-word">
+        <input id="readOnly" type="checkbox" ng-model="readOnly" ng-click="setReadOnly()"/> Read Only?
+    </label>
+
+    <div>
+        <br>
+        Number of header lines:
+        <input type="number" min="1" max="100" value="1" ng-model="headerLines" ng-disabled="!hasHeader" ng-click="headerCheck(headerLines)" />
+        <br>
+    </div>
+
+    <p>
+        File name: {{fileName}}
+        <br>
+        File type: {{fileType}}
+        <br>
+        File size: {{fileSize}}
+    </p>
+
+    <!--div ng-bind-html="html_str" style="border: 1px solid black;"></div-->
+
+    <div ng-show="fileLoaded && sheets.length > 1" style="width: 750px; height: 50px; background-color: #EEEEEE; border: 1px solid grey">
+        <div ng-style="sheetTabStyle(sheet.number)" ng-click="selectSheet(sheet.number)" ng-repeat="sheet in sheets">
+            {{sheet.name}}
+        </div>
+    </div>
+    <div style="display: inline-block; border: 1px solid black;" id="table_0" ng-show="selectedSheet === 0" ng-click="tableSelect()" style="display: inline-block;"></div>
+    <div style="display: inline-block;" id="table_1" ng-show="selectedSheet === 1" ng-click="tableSelect()" style="display: inline-block;"></div>
+    <div style="display: inline-block;" id="table_2" ng-show="selectedSheet === 2" ng-click="tableSelect()" style="display: inline-block;"></div>
+    <div style="display: inline-block;" id="table_3" ng-show="selectedSheet === 3" ng-click="tableSelect()" style="display: inline-block;"></div>
+    <div style="display: inline-block;" id="table_4" ng-show="selectedSheet === 4" ng-click="tableSelect()" style="display: inline-block;"></div>
+    <div style="display: inline-block; vertical-align: top; margin-left: 50px; width: 500px; border: 1px solid black;" ng-show="fileLoaded">
+        Get rows:
+        <input type="text" value="all" ng-model="parseRows" ng-disabled="!fileLoaded"/>
+        <input type="button" value="Get" ng-click="parseRowString(parseRows, numRows)" ng-disabled="!fileLoaded">
+        <br>
+        <p>
+            Selecting rows: <b>{{selectedRowsString}}</b>
+        </p>
+        <div style="border: 1px solid black; height: 0px; width: 500px;"></div>
+        <br>
+        <div ng-show="false">
+            Enter Date Format:
+            <input type="text" ng-model="dateFormat">
+            <input type="button" value="Set" ng-click="readDateFormat(dateFormat)">
+        </div>
+        <div ng-show="false">
+            Select Date Format:
+            <select ng-model="dateFormat" ng-change="changeDateFormat()">
+                <option value="">Choose a format...</option>
+                <option ng-repeat="format in getDateFormatOptions()" value="{{format}}">{{format}}</option>
+            </select>
+        </div>
+        <div ng-show="true">
+            <ul>
+                <li ng-repeat="col in cols[selectedSheet]">
+                    {{col.colIndex}}
+                    <select ng-click="dataTypeChange(col)" ng-model="(cols[selectedSheet])[col.colIndex].typeOfData">
+                        <option ng-repeat="opt in colOptions" value="{{opt}}">{{opt.toString()}}</option>
+                    </select>
+                    <select ng-show="(cols[selectedSheet])[col.colIndex].typeOfData === 'Currency'">
+                        <option value="">Choose a currency...</option>
+                        <option ng-repeat="format in getCurrencyFormatOptions()" value="{{format}}">{{currencyList.get(format) + ' ' + format}}</option>
+                    </select>
+                    <select ng-show="(cols[selectedSheet])[col.colIndex].typeOfData === 'Date'">
+                        <option value="">Choose a date format...</option>
+                        <option ng-repeat="format in getDateFormatOptions()" value="{{format}}">{{format}}</option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div ng-show="fileLoaded">
+        <p>Selected Range: <b>{{rangeString}}</b></p>
+    </div>
+
+    <div id="test_table" ng-show="false"></div>
+
+    <script src="../../js/old/file_upload.js"></script>
+</div>
+
+</body>
+
+</html>

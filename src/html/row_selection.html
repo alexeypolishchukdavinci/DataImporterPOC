@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo: Row Selection String</title>
+    <script src="../js/lib/angular.min.js"></script>
+    <script src="../js/row_selection.controller.js"></script>
+    <link rel="stylesheet" href="../css/angular_css.css">
+</head>
+<body ng-app="testApp" >
+    <div ng-controller="RowSelectionController">
+        Rows to select: <input type="text" ng-model="rowStr" ng-change="doParse(rowStr)" placeholder="Enter rows to import...">
+        Number of total rows: <input type="number" min="1" max="9999" ng-model="rowCount" ng-change="doParse(rowStr)" placeholder="Number of rows...">
+        <button type="button" ng-click="makeEfficient()">Make Numeric</button>
+        <br>
+        <ul>
+            <li ng-repeat="err in parsedErrors" ng-style="getErrStyle(err)">
+                {{getErrString(err)}}
+            </li>
+        </ul>
+        <br>
+        Valid commands:
+        <ul>
+            <li ng-click="addToRowStr('X-Y')">
+                <i class="italic_click">X-Y</i>, X and Y are positive integers
+            </li>
+            <li ng-click="addToRowStr('N')">
+                <i class="italic_click">N</i>, N is a positive integer
+            </li>
+            <li ng-click="addToRowStr('all')">
+               <i class="italic_click">all</i>
+            </li>
+            <li ng-click="addToRowStr('even')">
+                <i class="italic_click">even</i>
+            </li>
+            <li ng-click="addToRowStr('odd')">
+                <i class="italic_click">odd</i>
+            </li>
+            <li ng-click="addToRowStr('not X-Y')">
+                <i class="italic_click">not X-Y</i>, X and Y are positive integers
+            </li>
+            <li ng-click="addToRowStr('not N')">
+                <i class="italic_click">not N</i>, N is a positive integer
+            </li>
+            <li ng-click="addToRowStr('every N')">
+                <i class="italic_click">every N</i>, N is a positive integer
+            </li>
+
+        </ul>
+        <table ng-show="parsedNeighborTable.length > 0">
+            <tr>
+                <th style="border: 1px solid black;">Selected?</th>
+            </tr>
+            <tr ng-repeat="n in parsedNeighborTable track by $index">
+                <td id="parseTable" ng-style="getCellColor(parsedNeighborTable[$index])" ng-click="clickSelect($index)">
+                    <b>{{$index + 1}}</b>: {{parsedNeighborTable[$index]}}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <my-footer></my-footer>
+</body>
+</html>

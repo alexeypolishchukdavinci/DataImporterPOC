@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo: Data Mapping and Settings</title>
+    <script src="../js/lib/angular.min.js"></script>
+    <script src="../js/data_mapping.controller.js"></script>
+    <link rel="stylesheet" href="../css/angular_css.css">
+</head>
+<body ng-app="testApp" >
+<div ng-controller="DataMappingController">
+    <div id="tab" ng-repeat="tab in tabs" ng-show="$index===currentTab">
+        <div id="tabBar" ng-repeat="tabNames in tabs" ng-style="getTabStyle($index)" ng-click="switchTab($index)">
+            {{tabNames.name}}
+        </div>
+        <div id="column" ng-repeat="column in tab.columns" ng-show="$index===tab.currentColumn">
+            <div id="columnBar" ng-repeat="colName in tab.columns" ng-style="getColumnStyle($index)" ng-click="switchColumn($index)">
+                {{colName.display}}
+            </div>
+            <div id="columnView" style="border: 1px solid black">
+                <div id="columnPreview" style="display: inline-block">
+                    <table style="width: 200px;">
+                        <tr style="background-color: lightgrey">
+                            <th style="border: 1px solid grey; text-align: center">
+                                Preview
+                            </th>
+                        </tr>
+                        <tr ng-repeat="prev in tab.columnPreview track by $index">
+                            <td style="border: 1px solid grey; text-align: center;">
+                                {{prev}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="columnSettings" style="display: inline-block; vertical-align: center">
+                    <div id="generalSettings">
+                        <p style="display: inline-block"><b>Column Name:</b></p>
+                        <p style="display: inline-block">
+                            {{column.display}}
+                        </p>
+                        <br>
+                        <p style="display: inline-block"><b>Equivalent:</b></p>
+                        <select id="equivalencySelector" ng-model="column.equivalent" ng-change="changeSettings()">
+                            <option ng-repeat="eq in tab.equivalencies" ng-value="eq.equivalent">
+                                {{eq.display + (eq.mandatory ? ' *' : '')}}
+                            </option>
+                        </select>
+                        <br>
+                        <p style="display: inline-block"><b>Data Type:</b></p>
+                        <p style="display: inline-block">
+                            {{getDataType(column.equivalent)}}
+                        </p>
+                    </div>
+                    <div id="specificSettings" ng-show="currentColumn().equivalent!=='___none___'" style="border-top: 1px solid black; width: 100%">
+                        <!--{{tab.columnSettings}}-->
+                        <div id="checkSetting" ng-show="currentColumn().settings.check.enabled" style="background-color: salmon">
+                            <h4>{{currentColumn().settings.check.title}}</h4>
+                            <ul>
+                                <li ng-repeat="c in currentColumn().settings.check.options">
+                                    <input type="checkbox" style="display: inline-block" ng-model="c.select" ng-change="currentColumn().changesMade=true">
+                                    <p style="display: inline-block; cursor: pointer;" ng-click="c.select=!c.select">{{c.display}}</p>
+                                    <input type="text" style="display: inline-block" ng-model="c.value" ng-show="c.type==='text'" ng-change="currentColumn().changesMade=true">
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="radioSetting" ng-show="currentColumn().settings.radio.enabled" style="background-color: lightgreen">
+                            <h4>{{currentColumn().settings.radio.title}}</h4>
+                            <label ng-repeat="r in currentColumn().settings.radio.options">
+                                <input type="radio" name="{{currentColumn().settings.radio.name}}" ng-model="currentColumn().settings.radio.choice" ng-change="currentColumn().changesMade=true"> {{r.display}}
+                                <input type="text" name="{{currentColumn().settings.radio.name}}" style="display: inline-block" ng-model="r.text" ng-show="r.type==='text'" ng-change="currentColumn().changesMade=true">
+                                <br>
+                            </label>
+                        </div>
+                        <div id="textSetting" ng-show="currentColumn().settings.text.enabled" style="background-color: lightblue">
+                            <h4>{{currentColumn().settings.text.title}}</h4>
+                            <div ng-repeat="t in currentColumn().settings.text.options" ng-show="t.type==='regular'">
+                                <p style="display: inline-block;">{{t.text}}:</p>
+                                <input type="text" ng-show="t.type==='regular'" ng-model="t.value" placeholder="{{t.placeholder}}" ng-change="currentColumn().changesMade=true">
+                                <textarea ng-show="t.type==='box'" ng-model="t.value" placeholder="{{t.placeholder}}" ng-change="currentColumn().changesMade=true">test</textarea>
+                                <br>
+                            </div>
+                        </div>
+                        <div id="mapSetting" ng-show="currentColumn().settings.map.enabled" style="background-color: yellow">
+                            <h4>{{currentColumn().settings.map.title}}</h4>
+                            <table>
+                                <tr>
+                                    <th></th>
+                                    <th>
+                                        Your Value
+                                    </th>
+                                    <th>
+                                        Our Value
+                                    </th>
+                                </tr>
+                                <tr ng-repeat="opt in currentColumn().settings.map.options">
+                                    <td>
+                                        {{opt.text}}
+                                    </td>
+                                    <td>
+                                        <input type="text" ng-model="opt.key" ng-change="currentColumn().changesMade=true">
+                                    </td>
+                                    <td>
+                                        <select ng-model="opt.value" ng-change="currentColumn().changesMade=true">
+                                            <option ng-repeat="v in currentColumn().settings.map.values" ng-value="v">
+                                                {{v}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="otherSettings">
+                    <div ng-show="tab.columnMetaSettings.length>0">
+                        <!--columnMetaSettings-->
+                        <div ng-show="tab.columnMetaSettings.indexOf('ignore-case')!==-1">
+                            <input type="checkbox" ng-model="meta.ignoreCase">
+                            Ignore case
+                        </div>
+                        <div ng-show="tab.columnMetaSettings.indexOf('ignore-whitespace')!==-1">
+                            <input type="checkbox" ng-model="meta.ignoreWhitespace">
+                            Ignore whitespaces
+                        </div>
+                        <div ng-show="tab.columnMetaSettings.indexOf('trim')!==-1">
+                            <input type="checkbox" ng-model="meta.trim">
+                            Trim
+                        </div>
+                        <div ng-show="tab.columnMetaSettings.indexOf('auto-match-identical')!==-1">
+                            <input type="checkbox" ng-model="meta.autoMatch">
+                            Automatically match identical cells
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--div>
+        {{tabs[currentTab]}}
+    </div-->
+</div>
+<my-footer></my-footer>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="testApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo: Row Selection String</title>
+    <script src="../js/lib/angular.min.js"></script>
+    <script src="../js/lib/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="../js/lib/handsontable-pro/dist/handsontable.full.js"></script>
+    <script src="../js/data_preview.controller.js"></script>
+    <link rel="stylesheet" href="../css/angular_css.css">
+    <link rel="stylesheet" media="screen" href="../js/lib/handsontable-pro/dist/handsontable.full.css">
+</head>
+<body>
+<div ng-controller="DataPreviewController">
+    <div id="tab" ng-repeat="tab in tabs" ng-show="$index===currentTab">
+        <div ng-repeat="tabNames in tabs" class="tabTitle" ng-style="getTabStyle($index)" ng-click="switchTab($index)">
+            {{tabNames.name}}
+        </div>
+        <div id="columnList" style="display: inline-block; width: 25%; border: 1px solid black;">
+            <h3 style="text-align: center">Select columns to import:</h3>
+            <ul>
+                <li ng-repeat="col in tabs[currentTab].headers">
+                    <input type="checkbox" ng-model="col.select" ng-change="selectColumn(col)"> {{col.display}}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="tablePreview" style="display: inline-block; width: 74%; border: 1px solid black">
+        <div style="display: inline-block; text-align: center">
+            <p style="display: inline-block;">Rows per page:</p>
+            <input style="display: inline-block;" type="number" min="1" max="100" ng-model="tabs[currentTab].rowsPerPage" ng-change="refreshPage()">
+            <!--p>(Total rows: {{tabs[currentTab].totalRows}})</p-->
+            <div style="background-color: red; display: inline-block; cursor: pointer" ng-click="prevPage()">
+                prev
+            </div>
+            <div style="display: inline-block;">
+                {{tabs[currentTab].currentPage + 1}}
+            </div>
+            <div style="background-color: green; display: inline-block; cursor: pointer" ng-click="nextPage()">
+                next
+            </div>
+        </div>
+        <div style="border: 1px solid red" id="hotTable"></div>
+    </div>
+</div>
+<my-footer></my-footer>
+</body>
+</html>

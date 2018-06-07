@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo: Popups</title>
+    <script src="../js/lib/angular.min.js"></script>
+    <script src="../js/api_communication.controller.js"></script>
+    <link rel="stylesheet" href="../css/angular_css.css">
+
+    <style>
+        .apiDivs {
+            border: 1px solid black;
+        }
+
+        p {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body ng-app="testApp" >
+<div ng-controller="APIController">
+    <div class="apiDivs">
+        <h3 style="text-align: center">
+            /api/v1/importer/persons
+        </h3>
+        <br>
+        <div ng-repeat="p in people" style="margin-left: 10%; margin-right: 10%">
+            <div style="border: 1px solid grey;">
+                <p>Name: </p> <input type="text" ng-model="p.personName"> <br>
+                <p>DoB: </p> <input type="number" min="0" ng-model="p.dob">
+            </div>
+            <br>
+        </div>
+        <br>
+        <div id="buttons" style="text-align: center">
+            <button ng-click="addPerson()">
+                Add Person
+            </button>
+            <button ng-click="removePerson()">
+                Pop Person
+            </button>
+            <button ng-click="postPersonsAPI()">
+                Submit
+            </button>
+        </div>
+        <br>
+    </div>
+</div>
+<my-footer></my-footer>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo: Import Confirmation</title>
+    <script src="../js/lib/angular.min.js"></script>
+    <script src="../js/confirmation.controller.js"></script>
+    <link rel="stylesheet" href="../css/angular_css.css">
+</head>
+<body ng-app="testApp" >
+<div ng-controller="ConfirmationController">
+    <button type="button" ng-click="testProcess()">
+        PROCESS TEST
+    </button>
+    <button type="button" ng-click="testSuccess()">
+        SUCCESS TEST
+    </button>
+    <button type="button" ng-click="testWarn()">
+        WARNING TEST
+    </button>
+    <button type="button" ng-click="testError()">
+        ERROR TEST
+    </button>
+    <div id="header" ng-style="statusStyle()" style="text-align: center">
+        <h2 ng-show="status.status==='___none___'">
+            ---
+        </h2>
+        <h2 ng-show="status.status==='processing'">
+            Processing import, please wait.   {{processIcon}}
+        </h2>
+        <button ng-show="status.status==='processing'" ng-click="addPercent()">+</button>
+        <h2 ng-show="status.status==='success'">
+            File successfully imported!
+        </h2>
+        <h2 ng-show="status.status==='warn'">
+            File imported with some issues...
+        </h2>
+        <h2 ng-show="status.status==='error'">
+            File could not be imported.
+        </h2>
+    </div>
+    <div id="bigBox" style="border: 1px solid black; overflow-x: auto; height: 500px; font-size: 24px;">
+        <div id="messageBox" ng-show="status.messages.length>0">
+            <p>Progress: {{progBar()}} {{percentDone}}%</p>
+            <ul>
+                <li ng-repeat="msg in status.messages">
+                    {{msg.text}}
+                </li>
+            </ul>
+        </div>
+        <br>
+        <div id="warningBox" ng-show="status.warnings.length>0">
+            <p>Warnings: </p>
+            <ul>
+                <li ng-repeat="warn in status.warnings">
+                    {{warn.text}}
+                </li>
+            </ul>
+        </div>
+        <br>
+        <div id="errorBox" ng-show="status.errors.length>0">
+            <p>Errors: </p>
+            <ul>
+                <li ng-repeat="err in status.errors">
+                    {{err.text}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<my-footer></my-footer>
+</body>
+</html>

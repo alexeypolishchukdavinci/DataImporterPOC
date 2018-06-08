@@ -55,6 +55,6 @@ ang.config(
 
 ang.directive('myFooter', function() {
 	return {
-		templateUrl: 'src/html/footer_bar.html'
+		templateUrl: 'footer_bar.html'
 	};
 });

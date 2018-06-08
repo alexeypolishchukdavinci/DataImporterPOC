@@ -6,9 +6,52 @@ ang.directive('myFooter', function() {
 	};
 });
 
+const loading = [
+	'▓▓▓▒▒▒▒▒▒',
+	'▒▓▓▓▒▒▒▒▒',
+	'▒▒▓▓▓▒▒▒▒',
+	'▒▒▒▓▓▓▒▒▒',
+	'▒▒▒▒▓▓▓▒▒',
+	'▒▒▒▒▒▓▓▓▒',
+	'▒▒▒▒▒▒▓▓▓',
+	'▒▒▒▒▒▓▓▓▒',
+	'▒▒▒▒▓▓▓▒▒',
+	'▒▒▒▓▓▓▒▒▒',
+	'▒▒▓▓▓▒▒▒▒',
+	'▒▓▓▓▒▒▒▒▒',
+];
+let loadProg = 0;
+
 ang.controller('APIController', function APIController ($scope, $http) {
 	const HOST = 'http://localhost:8083/';
 
+	$scope.possibleGoals = [];
+
+	$scope.loadingIcon = loading[0];
+
+	let changeLoad = setInterval(function () {
+		if (loadProg + 1 === loading.length - 1) {
+			$scope.loadingIcon = loading[0];
+			loadProg = 0;
+		}
+		else {
+			$scope.loadingIcon = loading[loadProg + 1];
+			loadProg++;
+		}
+		$scope.$apply();
+	}, 100);
+
+	$http({
+		url: HOST + 'api/v1/importer/goal',
+		method: "GET",
+		headers: {}
+	})
+	.then( function (data) {
+		console.log(data.data);
+		$scope.possibleGoals = data.data;
+	});
+
+	/*
 	$scope.received = '';
 	$scope.currentAPI = '';
 
@@ -54,4 +97,5 @@ ang.controller('APIController', function APIController ($scope, $http) {
 			alert(str);
 		});
 	};
+	*/
 });

@@ -19,7 +19,7 @@
 </head>
 <body ng-app="testApp" >
 <div ng-controller="APIController">
-    <div class="apiDivs">
+    <!--div class="apiDivs">
         <h3 style="text-align: center">
             /api/v1/importer/persons
         </h3>
@@ -42,6 +42,26 @@
             <button ng-click="postPersonsAPI()">
                 Submit
             </button>
+        </div>
+        <br>
+    </div-->
+    <div class="apiDivs">
+        <h3 style="text-align: center">
+            /api/v1/importer/goal
+        </h3>
+        <br>
+        <h3 style="text-align: center">
+            Possible Goals
+        </h3>
+        <div ng-show="possibleGoals.length===0" style="text-align: center">
+            {{loadingIcon}}
+        </div>
+        <div ng-show="possibleGoals.length>0" style="border: 1px solid black; width: 50%; margin: auto;">
+            <ul>
+                <li ng-repeat="goal in possibleGoals">
+                    {{goal.id}}: {{goal.optionLabel}}
+                </li>
+            </ul>
         </div>
         <br>
     </div>

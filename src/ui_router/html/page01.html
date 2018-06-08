@@ -1,0 +1,14 @@
+<style>
+    .catPic {
+        display: inline-block;
+        margin-left: 5px;
+        margin-right: 5px;
+        width: 30%;
+    }
+</style>
+
+<div>
+    <span>
+        <img class="catPic" ng-repeat="n in [1, 2, 3]" ng-src="{{getSrc($index, 'cat')}}">
+    </span>
+</div>

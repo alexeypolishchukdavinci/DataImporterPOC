@@ -2,30 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Data Importer Demos</title>
+    <title>UI Router Demo</title>
     <script src="src/js/lib/angular.min.js"></script>
+    <script src="src/js/lib/angular-ui-router.js"></script>
+    <script src="src/ui_router/routerApp.js"></script>
+    <script src="src/ui_router/js/home.controller.js"></script>
 </head>
-<body ng-app="testApp" >
-<div ng-controller="MainController">
-    <a href="src/html/file_upload.html">
-        FILE UPLOAD
-    </a>
-    <br>
-    <a href="src/html/data_preview.html">
-        DATA PREVIEW
-    </a>
-    <br>
-    <a href="src/html/row_selection.html">
-        ROW SELECTION
-    </a>
-    <br>
-    <a href="src/html/data_mapping.html">
-        DATA MAPPING
-    </a>
-    <br>
-    <a href="src/html/confirmation.html">
-        IMPORT CONFIRMATION
-    </a>
-</div>
+<body>
+    <div ng-app="routerApp">
+        <div ui-view></div>
+        <my-footer></my-footer>
+    </div>
 </body>
 </html>

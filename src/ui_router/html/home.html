@@ -1,0 +1,31 @@
+<style>
+    .routedPages {
+        border-top: 1px solid lightgrey;
+        border-left: 1px solid lightgrey;
+        border-right: 1px solid grey;
+        border-bottom: 1px solid grey;
+        width: 50%;
+        text-align: center;
+        margin: auto;
+    }
+    .routedPages:hover {
+        .routedPages;
+        background-color: rgba(220, 220, 220, 100);
+        cursor: pointer;
+    }
+</style>
+<div style="border: 1px solid black;">
+    <div style="text-align: center">
+        <b>
+            Angular UI Router Pages
+        </b>
+    </div>
+    <div>
+        <div ng-repeat="page in routedPages" ui-sref-active="active" class="routedPages" title="Go to '{{page.title}}'" ui-sref="{{page.url}}">
+            <a>
+                {{page.title}} {{page.emoji}}
+            </a>
+        </div>
+    </div>
+    <br>
+</div>
